@@ -1,0 +1,105 @@
+{
+  "chats": {
+    "friend_of_": {
+      "one": "Friend of 1 Wevive user",
+      "few": "Friend of {{count}} Wevive users",
+      "many": "Friend of {{count}} Wevive users",
+      "other": "Friend of {{count}} Wevive users",
+      "zero": "Friend of 0 Wevive users"
+    },
+  },
+  "auth": {
+    "username": "Username",
+    "country": "Country",
+    "name": "Name",
+    "email": "Email",
+    "address1": "Address 1",
+    "address2": "Address 2",
+    "town": "City / Town",
+    "county": "County",
+    "postcode": "Postcode",
+    "phone": "Phone",
+    "dob": "DOB",
+    "password": "Password",
+    "back_to_login": "Back to login",
+    "toc": "By signing up I confirm that I am over 16 years old",
+    "password_confirmation": "Password confirmation",
+    "register": "Register",
+    "password_must_match": "Passwords must match",
+    "failed_signup": "Failed to sign up",
+    "failed_change": "Failed to change details, please try again.",
+    "code": "Code",
+    "confirm": "Confirm",
+    "current_password": "Current Password",
+    "password_changed": "Password changed",
+    "details_changed": "Account details changed",
+    "next": "Next",
+    "enter_code": "ENTER CODE SENT TO YOU BY EMAIL / SMS TO CONFIRM"
+  },
+  "contact": {
+    "type": "Type",
+    "category": "Category",
+    "raffle": "Raffle",
+    "comments": "Comments",
+    "contact": "Contact",
+    "failed": "Failed to send your request, please try again later",
+    "success": "Thank you for reaching out to us. One of our team will get back to you within 72 hours.",
+    "subject": "Subject",
+    "payments": "Payments",
+    "lotteries":  "Raffles",
+    "general": "General"
+  },
+  "account": {
+    "update": "Update",
+    "add_funds": "Add Funds",
+    "redeem_funds": "Redeem Funds",
+    "claim_amount": "Amount to claim",
+    "claim_method": "Method",
+    "submit": "Submit",
+    "buy_now": "Buy Now",
+    "amount": "Amount",
+    "enable_touchid": "Enable automatic sign in",
+    "disable_touchid": "Disable automatic sign in",
+    "update_failed": "Failed to update details",
+  },
+  "funds": {
+    "top_up_here": "Top up your account here",
+    "top_up_text1": "You will need to have funds in your Praxis account before you can purchase tickets or play Lottery Instant games.",
+    "top_up_text2": "Simply choose the amount you want to add to your Praxis account and pay with PayPal or Card - Easy!",
+    "top_up_text3": "Please note that it may take a few minutes for the funds to reach your My Club Lottery account before you can purchase tickets or play Lottery Instant games.",
+  },
+  "lottery": {
+    "number_of_tickets": {
+      "one": "You have 1 ticket in this draw",
+      "few": "You have {{count}} tickets in this draw",
+      "many": "You have {{count}} tickets in this draw",
+      "other": "You have {{count}} tickets in this draw",
+      "zero": "You don't have tickets in this draw",
+    },
+    "percentage_net": "{{value}}% of Net Income",
+    "percentage_gross": "{{value}}% of Gross Income",
+    "flat_net": "£{{value}} Fixed Prize",
+    "flat_gross": "£{{value}} Fixed Prize",
+    "physical_prize": "{{value}}",
+    "tickets": "Tickets",
+    "checkout": "Checkout",
+    "max_amount_of_tickets": "You can't purchase more",
+    "default_cta": "WIN A FREE PRIZE",
+    "price_cta": "ONLY £{{price}} TO PLAY"
+  },
+  "lotteries": {
+    "me": {
+      "all": "Raffles",
+      "live": "My Active Draws",
+      "closed": "My Previous Draws",
+      "pending": "My Pending Draws"
+    },
+    "all": {
+      "all": "Raffles",
+      "live": "Active Draws",
+      "closed": "Previous Draws",
+      "pending": "Pending Draws",
+      "ready": "Pending Draws"
+    }
+  }
+}

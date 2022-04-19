@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-biometrics/react-native-biometrics.podspec b/node_modules/react-native-biometrics/react-native-biometrics.podspec
+index b451efa..e6c8859 100644
+--- a/node_modules/react-native-biometrics/react-native-biometrics.podspec
++++ b/node_modules/react-native-biometrics/react-native-biometrics.podspec
+@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
+   s.license        = package['license']
+   s.homepage       = package['homepage']
+   s.source         = { :git => 'https://github.com/SelfLender/react-native-biometrics.git', :tag => "#{s.version}" }
+-  s.platform       = :ios, '10.0'
++  s.platform       = :ios, '9.0'
+   s.source_files   = 'ios/**/*.{h,m}'
+   s.dependency     'React'
+ end

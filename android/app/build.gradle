@@ -1,0 +1,207 @@
+project.ext.react = [
+    enableHermes: true,  // clean and rebuild if changing
+]
+apply plugin: 'com.android.application'
+
+// Crashlytics integration is done as part of Firebase now, so it gets
+// automagically activated with google-services.json
+if (googleServicesEnabled) {
+    apply plugin: 'com.google.firebase.crashlytics'
+}
+apply from: "../../node_modules/react-native/react.gradle"
+// Use the number of seconds/60 since Jan 1 2021 as the versionCode.
+def vcode = (int) (((new Date().getTime() / 1000) - 1609459200) / 60)
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    ndkVersion = "22.1.7171670"
+    packagingOptions {
+        exclude "**/libjsc*.so"
+        //exclude '**/libhermes-inspector.so'
+        //exclude '**/libhermes-executor-debug.so'
+        //exclude '**/libhermes-executor-common-debug.so'
+        pickFirst '**/libc++_shared.so'
+
+        //exclude 'lib/*/libhermes*.so'
+        pickFirst 'lib/armeabi-v7a/libsodium.so'
+        pickFirst 'lib/*/libsqlcipher.so'
+    }
+
+    defaultConfig {
+        applicationId project.property("APP_ID")
+        versionCode vcode
+        versionName project.property("APP_VERSION")
+
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+        release {
+            if (project.hasProperty('UPLOAD_STORE_FILE')) {
+                storeFile file(UPLOAD_STORE_FILE)
+                storePassword UPLOAD_STORE_PASSWORD
+                keyAlias UPLOAD_KEY_ALIAS
+                keyPassword UPLOAD_KEY_PASSWORD
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "boolean", "GOOGLE_SERVICES_ENABLED", "${googleServicesEnabled}"
+            buildConfigField "boolean", "LIBRE_BUILD", "${rootProject.ext.libreBuild}"
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-release.pro'
+            buildConfigField "boolean", "GOOGLE_SERVICES_ENABLED", "${googleServicesEnabled}"
+            buildConfigField "boolean", "LIBRE_BUILD", "${rootProject.ext.libreBuild}"
+        }
+    }
+
+    sourceSets {
+        main {
+            java {
+                if (rootProject.ext.libreBuild) {
+                    srcDir "src"
+                    exclude "**/GoogleServicesHelper.java"
+                }
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation project(':react-native-fs')
+    implementation project(':react-native-localize')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+
+    if (!rootProject.ext.libreBuild) {
+        implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
+        // Firebase
+        //  - Crashlytics
+        //  - Dynamic Links
+        implementation 'com.google.firebase:firebase-analytics:17.5.0'
+        implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
+        implementation 'com.google.firebase:firebase-dynamic-links:19.1.0'
+    }
+
+    implementation project(':sdk')
+    def hermesPath = "../../node_modules/hermes-engine/android/";
+    debugImplementation files(hermesPath + "hermes-debug.aar")
+    releaseImplementation files(hermesPath + "hermes-release.aar")
+    //implementation 'org.videolan.android:libvlc-all:3.3.8'
+    //implementation('com.yyl.vlc:vlc-android-sdk:3.3.0'){
+    //    transitive = false
+    //}
+    //implementation 'de.mrmaffen:libvlc-android:2.1.12@aar'
+}
+
+gradle.projectsEvaluated {
+    // Dropbox integration
+    //
+
+    def dropboxAppKey
+    if (project.file('dropbox.key').exists()) {
+        dropboxAppKey = project.file('dropbox.key').text.trim() - 'db-'
+    }
+
+    if (dropboxAppKey) {
+        android.defaultConfig.resValue('string', 'dropbox_app_key', "${dropboxAppKey}")
+
+        def dropboxActivity = """
+          <activity
+              android:configChanges="keyboard|orientation"
+              android:launchMode="singleTask"
+              android:name="com.dropbox.core.android.AuthActivity">
+            <intent-filter>
+              <action android:name="android.intent.action.VIEW" />
+              <category android:name="android.intent.category.BROWSABLE" />
+              <category android:name="android.intent.category.DEFAULT" />
+              <data android:scheme="db-${dropboxAppKey}" />
+            </intent-filter>
+          </activity>"""
+
+        android.applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                output.getProcessManifestProvider().get().doLast {
+                    def outputDir = manifestOutputDirectory.get().asFile
+                    def manifestPath = new File(outputDir, 'AndroidManifest.xml')
+                    def charset = 'UTF-8'
+                    def text
+                    text = manifestPath.getText(charset)
+                    text = text.replace('</application>', "${dropboxActivity}</application>")
+                    manifestPath.write(text, charset)
+                }
+            }
+        }
+    }
+
+    // Run React packager
+    android.applicationVariants.all { variant ->
+        def targetName = variant.name.capitalize()
+
+        def currentRunPackagerTask = tasks.create(
+            name: "run${targetName}ReactPackager",
+            type: Exec) {
+            group = "react"
+            description = "Run the React packager."
+
+            doFirst {
+                println "Starting the React packager..."
+
+                def androidRoot = file("${projectDir}/../")
+
+                // Set up the call to the script
+                workingDir androidRoot
+
+                // Run the packager
+                if(System.getProperty('os.name').toLowerCase().contains('windows')){
+                    commandLine("scripts/run-packager.bat")
+                } else {
+                    commandLine("scripts/run-packager.sh")
+                }
+
+            }
+
+            // Set up dev mode
+            def devEnabled = !targetName.toLowerCase().contains("release")
+
+            // Only enable for dev builds
+            enabled devEnabled
+        }
+
+        def packageTask = variant.packageApplicationProvider.get()
+
+        packageTask.dependsOn(currentRunPackagerTask)
+    }
+
+}
+
+if (googleServicesEnabled) {
+    apply plugin: 'com.google.gms.google-services'
+}
+
+//apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

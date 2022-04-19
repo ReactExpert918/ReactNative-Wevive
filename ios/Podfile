@@ -1,0 +1,62 @@
+
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+$RNFirebaseAsStaticFramework = true
+install! 'cocoapods', :deterministic_uuids => false
+workspace 'jitsi-meet'
+#use_frameworks!
+platform :ios, '11.0'
+pre_install do |installer|
+  def installer.verify_no_static_framework_transitive_dependencies; end
+  installer.pod_targets.each do |pod|
+    if pod.name.eql?('RNPermissions') || pod.name.start_with?('Permission-')
+      def pod.build_type;
+        Pod::BuildType.static_library # >= 1.9
+      end
+    end
+  end
+  Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
+end
+
+target 'JitsiMeet' do
+  project 'app/app.xcodeproj'
+  pod 'OLMKit'
+end
+
+target 'JitsiMeetSDK' do
+  project 'sdk/sdk.xcodeproj'
+  config = use_native_modules!
+  use_react_native!(
+    :path => config["reactNativePath"],
+    :hermes_enabled => false
+  )
+  
+  # Enables Flipper.
+  #use_flipper!
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
+  pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
+  pod 'CocoaLumberjack', '~>3.5.3'
+  
+  pod 'Firebase/Messaging', '~> 7.10.0'
+  pod 'Firebase/Analytics', '~> 7.10.0'
+  pod 'Firebase/Core', '~> 7.10.0'
+end
+
+target 'ImageNotification' do
+  project 'app/app.xcodeproj'
+  pod 'Firebase/Messaging', '~> 7.10.0'
+  pod 'Firebase/Analytics', '~> 7.10.0'
+  pod 'Firebase/Core', '~> 7.10.0'
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['ENABLE_BITCODE'] = 'YES'
+      config.build_settings['SUPPORTS_MACCATALYST'] = 'NO'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+    end
+  end
+end

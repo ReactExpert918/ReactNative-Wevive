@@ -1,0 +1,42 @@
+diff --git a/node_modules/@react-navigation/core/lib/commonjs/useRouteCache.js b/node_modules/@react-navigation/core/lib/commonjs/useRouteCache.js
+index 184e134..b7fba2e 100644
+--- a/node_modules/@react-navigation/core/lib/commonjs/useRouteCache.js
++++ b/node_modules/@react-navigation/core/lib/commonjs/useRouteCache.js
+@@ -50,7 +50,7 @@ function useRouteCache(routes) {
+       Object.defineProperty(proxy, 'state', {
+         get() {
+           if (!SUPPRESS_STATE_ACCESS_WARNING.value) {
+-            console.warn("Accessing the 'state' property of the 'route' object is not supported. If you want to get the focused route name, use the 'getFocusedRouteNameFromRoute' helper instead: https://reactnavigation.org/docs/screen-options-resolution/#setting-parent-screen-options-based-on-child-navigators-state");
++            //console.warn("Accessing the 'state' property of the 'route' object is not supported. If you want to get the focused route name, use the 'getFocusedRouteNameFromRoute' helper instead: https://reactnavigation.org/docs/screen-options-resolution/#setting-parent-screen-options-based-on-child-navigators-state");
+           }
+ 
+           return route.state;
+diff --git a/node_modules/@react-navigation/core/lib/module/useRouteCache.js b/node_modules/@react-navigation/core/lib/module/useRouteCache.js
+index 12346d3..0cac7e4 100644
+--- a/node_modules/@react-navigation/core/lib/module/useRouteCache.js
++++ b/node_modules/@react-navigation/core/lib/module/useRouteCache.js
+@@ -36,7 +36,7 @@ export default function useRouteCache(routes) {
+       Object.defineProperty(proxy, 'state', {
+         get() {
+           if (!SUPPRESS_STATE_ACCESS_WARNING.value) {
+-            console.warn("Accessing the 'state' property of the 'route' object is not supported. If you want to get the focused route name, use the 'getFocusedRouteNameFromRoute' helper instead: https://reactnavigation.org/docs/screen-options-resolution/#setting-parent-screen-options-based-on-child-navigators-state");
++            //console.warn("Accessing the 'state' property of the 'route' object is not supported. If you want to get the focused route name, use the 'getFocusedRouteNameFromRoute' helper instead: https://reactnavigation.org/docs/screen-options-resolution/#setting-parent-screen-options-based-on-child-navigators-state");
+           }
+ 
+           return route.state;
+diff --git a/node_modules/@react-navigation/core/src/useRouteCache.tsx b/node_modules/@react-navigation/core/src/useRouteCache.tsx
+index 1dfd23d..b3f19ec 100644
+--- a/node_modules/@react-navigation/core/src/useRouteCache.tsx
++++ b/node_modules/@react-navigation/core/src/useRouteCache.tsx
+@@ -42,9 +42,9 @@ export default function useRouteCache<State extends NavigationState>(
+       Object.defineProperty(proxy, 'state', {
+         get() {
+           if (!SUPPRESS_STATE_ACCESS_WARNING.value) {
+-            console.warn(
++            /*console.warn(
+               "Accessing the 'state' property of the 'route' object is not supported. If you want to get the focused route name, use the 'getFocusedRouteNameFromRoute' helper instead: https://reactnavigation.org/docs/screen-options-resolution/#setting-parent-screen-options-based-on-child-navigators-state"
+-            );
++            );*/
+           }
+ 
+           return route.state;

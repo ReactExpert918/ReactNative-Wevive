@@ -1,0 +1,97 @@
+diff --git a/node_modules/react-native/ReactAndroid/build.gradle b/node_modules/react-native/ReactAndroid/build.gradle
+index 70c245c..fe088ae 100644
+--- a/node_modules/react-native/ReactAndroid/build.gradle
++++ b/node_modules/react-native/ReactAndroid/build.gradle
+@@ -8,7 +8,7 @@
+ plugins {
+     id("com.android.library")
+     id("com.facebook.react.codegen")
+-    id("maven")
++    id("maven-publish")
+     id("de.undercouch.download")
+ }
+ 
+diff --git a/node_modules/react-native/ReactAndroid/release.gradle b/node_modules/react-native/ReactAndroid/release.gradle
+index 8650a20..7e5fbad 100644
+--- a/node_modules/react-native/ReactAndroid/release.gradle
++++ b/node_modules/react-native/ReactAndroid/release.gradle
+@@ -5,7 +5,7 @@
+  * LICENSE file in the root directory of this source tree.
+  */
+ 
+-apply(plugin: "maven")
++apply(plugin: "maven-publish")
+ apply(plugin: "signing")
+ 
+ ext {
+@@ -114,29 +114,9 @@ afterEvaluate { project ->
+ 
+     uploadArchives {
+         configuration = configurations.archives
+-        repositories.mavenDeployer {
+-            beforeDeployment {
+-                MavenDeployment deployment -> signing.signPom(deployment)
+-            }
+-
+-            repository(url: getRepositoryUrl()) {
+-                authentication(
+-                        userName: getRepositoryUsername(),
+-                        password: getRepositoryPassword())
+-
+-            }
+-
+-            configureReactNativePom(pom)
+-        }
+     }
+ 
+     task installArchives(type: Upload) {
+         configuration = configurations.archives
+-        repositories.mavenDeployer {
+-            // Deploy to react-native/android, ready to publish to npm
+-            repository(url: AAR_OUTPUT_URL)
+-
+-            configureReactNativePom(pom)
+-        }
+     }
+ }
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/HeadlessJsTaskService.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/HeadlessJsTaskService.java
+index 10d9328..af82a99 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/HeadlessJsTaskService.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/HeadlessJsTaskService.java
+@@ -23,7 +23,7 @@ import com.facebook.react.jstasks.HeadlessJsTaskContext;
+ import com.facebook.react.jstasks.HeadlessJsTaskEventListener;
+ import java.util.Set;
+ import java.util.concurrent.CopyOnWriteArraySet;
+-
++import org.jitsi.meet.sdk.ReactInstanceManagerHolder;
+ /**
+  * Base class for running JS without a UI. Generally, you only need to override {@link
+  * #getTaskConfig}, which is called for every {@link #onStartCommand}. The result, if not {@code
+@@ -94,8 +94,7 @@ public abstract class HeadlessJsTaskService extends Service implements HeadlessJ
+   protected void startTask(final HeadlessJsTaskConfig taskConfig) {
+     UiThreadUtil.assertOnUiThread();
+     acquireWakeLockNow(this);
+-    final ReactInstanceManager reactInstanceManager =
+-        getReactNativeHost().getReactInstanceManager();
++    final ReactInstanceManager reactInstanceManager = ReactInstanceManagerHolder.getReactInstanceManager();
+     ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
+     if (reactContext == null) {
+       reactInstanceManager.addReactInstanceEventListener(
+@@ -131,8 +130,8 @@ public abstract class HeadlessJsTaskService extends Service implements HeadlessJ
+   public void onDestroy() {
+     super.onDestroy();
+ 
+-    if (getReactNativeHost().hasInstance()) {
+-      ReactInstanceManager reactInstanceManager = getReactNativeHost().getReactInstanceManager();
++    if (ReactInstanceManagerHolder.hasInstance()) {
++      ReactInstanceManager reactInstanceManager = ReactInstanceManagerHolder.getReactInstanceManager();
+       ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
+       if (reactContext != null) {
+         HeadlessJsTaskContext headlessJsTaskContext =
+diff --git a/node_modules/react-native/scripts/.packager.env b/node_modules/react-native/scripts/.packager.env
+new file mode 100644
+index 0000000..361f5fb
+--- /dev/null
++++ b/node_modules/react-native/scripts/.packager.env
+@@ -0,0 +1 @@
++export RCT_METRO_PORT=8081

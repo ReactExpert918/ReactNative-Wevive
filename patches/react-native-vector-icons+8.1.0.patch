@@ -1,0 +1,76 @@
+diff --git a/node_modules/react-native-vector-icons/Fonts/AntDesign.ttf b/node_modules/react-native-vector-icons/Fonts/AntDesign.ttf
+deleted file mode 100644
+index 2abf035..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/AntDesign.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/Fonts/Entypo.ttf b/node_modules/react-native-vector-icons/Fonts/Entypo.ttf
+deleted file mode 100644
+index 1c8f5e9..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/Entypo.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf b/node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf
+deleted file mode 100644
+index 6868f7b..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/Fonts/Feather.ttf b/node_modules/react-native-vector-icons/Fonts/Feather.ttf
+deleted file mode 100644
+index a3c58c5..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/Feather.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf b/node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf
+deleted file mode 100644
+index 35acda2..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf b/node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf
+deleted file mode 100644
+index 948a2a6..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf b/node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf
+deleted file mode 100644
+index abe99e2..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf b/node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf
+deleted file mode 100644
+index 5b97903..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/Fonts/Fontisto.ttf b/node_modules/react-native-vector-icons/Fonts/Fontisto.ttf
+deleted file mode 100755
+index 96e2e81..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/Fontisto.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/Fonts/Foundation.ttf b/node_modules/react-native-vector-icons/Fonts/Foundation.ttf
+deleted file mode 100644
+index 6cce217..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/Foundation.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/Fonts/Ionicons.ttf b/node_modules/react-native-vector-icons/Fonts/Ionicons.ttf
+deleted file mode 100644
+index 719442d..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/Ionicons.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf b/node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf
+deleted file mode 100644
+index 522dc31..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf b/node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf
+deleted file mode 100644
+index e50801b..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/Fonts/Octicons.ttf b/node_modules/react-native-vector-icons/Fonts/Octicons.ttf
+deleted file mode 100644
+index ceac75d..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/Octicons.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf b/node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf
+deleted file mode 100644
+index 6ecb686..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/Fonts/Zocial.ttf b/node_modules/react-native-vector-icons/Fonts/Zocial.ttf
+deleted file mode 100644
+index e4ae46c..0000000
+Binary files a/node_modules/react-native-vector-icons/Fonts/Zocial.ttf and /dev/null differ
+diff --git a/node_modules/react-native-vector-icons/RNVectorIcons.podspec b/node_modules/react-native-vector-icons/RNVectorIcons.podspec
+index 4b716ee..08f6378 100644
+--- a/node_modules/react-native-vector-icons/RNVectorIcons.podspec
++++ b/node_modules/react-native-vector-icons/RNVectorIcons.podspec
+@@ -12,7 +12,6 @@ Pod::Spec.new do |s|
+   s.platforms      = { :ios => "9.0", :tvos => "9.0" }
+   s.source         = { :git => "https://github.com/oblador/react-native-vector-icons.git", :tag => "v#{s.version}" }
+   s.source_files   = 'RNVectorIconsManager/**/*.{h,m}'
+-  s.resources      = "Fonts/*.ttf"
+   s.preserve_paths = "**/*.js"
+   s.dependency 'React-Core'
+ 

@@ -1,0 +1,55 @@
+diff --git a/node_modules/react-native-swipe-gestures/index.js b/node_modules/react-native-swipe-gestures/index.js
+index 38d1db5..61f5a82 100644
+--- a/node_modules/react-native-swipe-gestures/index.js
++++ b/node_modules/react-native-swipe-gestures/index.js
+@@ -7,13 +7,14 @@ export const swipeDirections = {
+   SWIPE_UP: "SWIPE_UP",
+   SWIPE_DOWN: "SWIPE_DOWN",
+   SWIPE_LEFT: "SWIPE_LEFT",
+-  SWIPE_RIGHT: "SWIPE_RIGHT"
++  SWIPE_RIGHT: "SWIPE_RIGHT",
++  ON_PRESS: "ON_PRESS"
+ };
+ 
+ const swipeConfig = {
+   velocityThreshold: 0.3,
+   directionalOffsetThreshold: 80,
+-  gestureIsClickThreshold: 5
++  gestureIsClickThreshold: 7
+ };
+ 
+ function isValidSwipe(
+@@ -74,9 +75,10 @@ class GestureRecognizer extends Component {
+       onSwipeUp,
+       onSwipeDown,
+       onSwipeLeft,
+-      onSwipeRight
++      onSwipeRight,
++      onPress
+     } = this.props;
+-    const { SWIPE_LEFT, SWIPE_RIGHT, SWIPE_UP, SWIPE_DOWN } = swipeDirections;
++    const { SWIPE_LEFT, SWIPE_RIGHT, SWIPE_UP, SWIPE_DOWN, ON_PRESS } = swipeDirections;
+     onSwipe && onSwipe(swipeDirection, gestureState);
+     switch (swipeDirection) {
+       case SWIPE_LEFT:
+@@ -91,13 +93,18 @@ class GestureRecognizer extends Component {
+       case SWIPE_DOWN:
+         onSwipeDown && onSwipeDown(gestureState);
+         break;
++      case ON_PRESS:
++        onPress && onPress(gestureState);
++        break;
+     }
+   }
+ 
+   _getSwipeDirection(gestureState) {
+-    const { SWIPE_LEFT, SWIPE_RIGHT, SWIPE_UP, SWIPE_DOWN } = swipeDirections;
++    const { SWIPE_LEFT, SWIPE_RIGHT, SWIPE_UP, SWIPE_DOWN, ON_PRESS } = swipeDirections;
+     const { dx, dy } = gestureState;
+-    if (this._isValidHorizontalSwipe(gestureState)) {
++    if(this._gestureIsClick(gestureState)) {
++       return ON_PRESS;
++    } else if (this._isValidHorizontalSwipe(gestureState)) {
+       return dx > 0 ? SWIPE_RIGHT : SWIPE_LEFT;
+     } else if (this._isValidVerticalSwipe(gestureState)) {
+       return dy > 0 ? SWIPE_DOWN : SWIPE_UP;

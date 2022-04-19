@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-cache-store/index.js b/node_modules/react-native-cache-store/index.js
+index 2f18e36..4a6b154 100644
+--- a/node_modules/react-native-cache-store/index.js
++++ b/node_modules/react-native-cache-store/index.js
+@@ -1,6 +1,6 @@
+ 'use strict';
+ 
+-import { AsyncStorage } from 'react-native';
++import AsyncStorage  from '@react-native-async-storage/async-storage';
+ 
+ // Inspired by lscache https://github.com/pamelafox/lscache
+ 

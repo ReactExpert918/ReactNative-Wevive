@@ -1,0 +1,198 @@
+diff --git a/node_modules/@nghinv/react-native-vlc/playerView/ControlBtn.js b/node_modules/@nghinv/react-native-vlc/playerView/ControlBtn.js
+index 3fd0490..96ef0fb 100644
+--- a/node_modules/@nghinv/react-native-vlc/playerView/ControlBtn.js
++++ b/node_modules/@nghinv/react-native-vlc/playerView/ControlBtn.js
+@@ -5,8 +5,8 @@ import {
+   View,
+   TouchableOpacity
+ } from 'react-native';
+-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+ import Slider from 'react-native-slider';
++import Icon from '../../../../src/components/Icon';
+ 
+ export default class ControlBtn extends Component {
+   static defaultProps = {
+@@ -67,22 +67,6 @@ export default class ControlBtn extends Component {
+         <View style={styles.controlContainer}>
+           <TouchableOpacity style={styles.controlContent} activeOpacity={1}>
+             <View style={styles.controlContent2}>
+-              <View style={styles.left}>
+-                {
+-                  showLeftButton ? (
+-                    <TouchableOpacity
+-                      activeOpacity={1}
+-                      onPress={() => {
+-                        onReplayPress && onReplayPress();
+-                      }}
+-                      style={{ width: 50, alignItems: 'center', justifyContent: 'center' }}>
+-                      <Icon name={'replay'} size={30} color="#fff" />
+-                    </TouchableOpacity>
+-                  ) : <View style={{ width: 50 }} />
+-                }
+-                <Text
+-                  style={{ fontSize: 11, color: '#fff' }}>       </Text>
+-              </View>
+               {
+                 showMiddleButton && (
+                   <TouchableOpacity
+@@ -91,7 +75,7 @@ export default class ControlBtn extends Component {
+                       onPausedPress && onPausedPress(!paused);
+                     }}
+                     style={{ width: 50, alignItems: 'center', justifyContent: 'center' }}>
+-                    <Icon name={paused ? 'play' : 'pause'} size={30} color="#fff" />
++                    <Icon name={paused ? 'play-icon' : 'pause'} size={30} color="#fff" />
+                   </TouchableOpacity>
+                 )
+               }
+@@ -132,14 +116,6 @@ export default class ControlBtn extends Component {
+                 </View>
+               )}
+               <View style={styles.right}>
+-                <TouchableOpacity
+-                  activeOpacity={1}
+-                  onPress={() => {
+-                    onGoLivePress && onGoLivePress();
+-                  }}>
+-                  <Text
+-                    style={{ fontSize: 11, color: '#fff' }}>{showGoLive ? titleGolive : '       '}</Text>
+-                </TouchableOpacity>
+                 {
+                   showRightButton ? (
+                     <TouchableOpacity
+diff --git a/node_modules/@nghinv/react-native-vlc/playerView/VLCPlayerView.js b/node_modules/@nghinv/react-native-vlc/playerView/VLCPlayerView.js
+index 020415c..a89af4f 100644
+--- a/node_modules/@nghinv/react-native-vlc/playerView/VLCPlayerView.js
++++ b/node_modules/@nghinv/react-native-vlc/playerView/VLCPlayerView.js
+@@ -12,7 +12,7 @@ import VLCPlayer from '../VLCPlayer';
+ import PropTypes from 'prop-types';
+ import TimeLimt from './TimeLimit';
+ import ControlBtn from './ControlBtn';
+-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
++import Icon from '../../../../src/components/Icon';
+ import { getStatusBarHeight } from './SizeController';
+ 
+ const statusBarHeight = getStatusBarHeight();
+@@ -32,7 +32,7 @@ export default class VLCPlayerView extends Component {
+       isFull: false,
+       currentTime: 0.0,
+       totalTime: 0.0,
+-      showControls: false,
++      showControls: true,
+       seek: 0,
+       isError: false,
+     };
+@@ -156,10 +156,11 @@ export default class VLCPlayerView extends Component {
+         <VLCPlayer
+           {...otherProps}
+           ref={ref => (this.vlcPlayer = ref)}
++          autoplay={true}
+           paused={this.state.paused}
+           style={[styles.video]}
+           source={source}
+-          videoAspectRatio={videoAspectRatio}
++          //videoAspectRatio={videoAspectRatio}
+           onProgress={this.onProgress.bind(this)}
+           onEnd={this.onEnded.bind(this)}
+           onStopped={this.onEnded.bind(this)}
+@@ -174,7 +175,7 @@ export default class VLCPlayerView extends Component {
+         {realShowLoading &&
+           !isError && (
+             <View style={styles.loading}>
+-              <ActivityIndicator size={'large'} animating={true} color="#fff" />
++              
+             </View>
+           )}
+         {isError && (
+@@ -363,7 +364,7 @@ export default class VLCPlayerView extends Component {
+         isError: false,
+       }, () => {
+         this.setState({
+-          paused: false,
++          paused: true,
+         });
+       })
+     } else {
+@@ -377,7 +378,7 @@ export default class VLCPlayerView extends Component {
+         totalTime: 0.0,
+       }, () => {
+         this.setState({
+-          paused: false,
++          paused: true,
+         });
+       })
+     }
+@@ -463,6 +464,7 @@ const styles = StyleSheet.create({
+   },
+   videoBtn: {
+     flex: 1,
++    backgroundColor: "rgba(255,255,255, 0.7)",
+   },
+   video: {
+     justifyContent: 'center',
+diff --git a/node_modules/@nghinv/react-native-vlc/playerView/index.js b/node_modules/@nghinv/react-native-vlc/playerView/index.js
+index 87db1e1..aa7188f 100644
+--- a/node_modules/@nghinv/react-native-vlc/playerView/index.js
++++ b/node_modules/@nghinv/react-native-vlc/playerView/index.js
+@@ -10,8 +10,8 @@ import {
+ } from 'react-native';
+ import VLCPlayerView from './VLCPlayerView';
+ import PropTypes from 'prop-types';
+-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+ import { getStatusBarHeight } from './SizeController';
++import Icon from '../../../../src/components/Icon';
+ 
+ const statusBarHeight = getStatusBarHeight();
+ const _fullKey = 'commonVideo_android_fullKey';
+@@ -199,7 +199,7 @@ export default class CommonVideo extends Component {
+               }}
+               style={styles.btn}
+               activeOpacity={0.8}>
+-              <Icon name={'chevron-left'} size={30} color="#fff" />
++              <Icon name={'add-icon'} size={30} color="#fff" />
+             </TouchableOpacity>
+             }
+             <View style={{ justifyContent: 'center', flex: 1, marginRight: 10 }}>
+@@ -210,31 +210,12 @@ export default class CommonVideo extends Component {
+           </View>
+         </View>
+         }
+-        {realShowAd && (
+-          <VLCPlayerView
+-            {...this.props}
+-            videoAspectRatio={currentVideoAspectRatio}
+-            uri={adUrl}
+-            source={{ uri: adUrl, type: adType }}
+-            type={adType}
+-            isAd={true}
+-            showBack={showBack}
+-            showTitle={showTitle}
+-            isFull={isFull}
+-            onEnd={() => {
+-              onAdEnd && onAdEnd();
+-              this.setState({ isEndAd: true });
+-            }}
+-            startFullScreen={this._toFullScreen}
+-            closeFullScreen={this._closeFullScreen}
+-          />
+-        )}
+ 
+         {showVideo && (
+           <VLCPlayerView
+             {...this.props}
+             uri={currentUrl}
+-            videoAspectRatio={currentVideoAspectRatio}
++            autoAspectRatio={true}
+             onLeftPress={onLeftPress}
+             title={title}
+             type={type}
+diff --git a/node_modules/@nghinv/react-native-vlc/react-native-vlc.podspec b/node_modules/@nghinv/react-native-vlc/react-native-vlc.podspec
+index 8e10b73..b861bab 100644
+--- a/node_modules/@nghinv/react-native-vlc/react-native-vlc.podspec
++++ b/node_modules/@nghinv/react-native-vlc/react-native-vlc.podspec
+@@ -11,5 +11,5 @@ Pod::Spec.new do |s|
+   s.platform     = :ios, "8.0"
+   s.static_framework = true  
+   s.dependency 'React'
+-  s.dependency 'MobileVLCKit', '3.3.16.3'
++  s.dependency 'MobileVLCKit', '3.3.17'
+ end

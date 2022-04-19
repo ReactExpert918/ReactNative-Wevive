@@ -1,0 +1,11 @@
+workspace "jitsi-meet" do
+  configuration "release" do
+    build_configuration "Release"
+  end
+
+  derived_data_path "build"
+
+  target "JitsiMeetSDK" do
+    cache "libPods-JitsiMeetSDK.a"
+  end
+end

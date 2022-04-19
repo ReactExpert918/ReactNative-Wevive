@@ -1,0 +1,24 @@
+diff --git a/node_modules/react-native-appearance/android/build.gradle b/node_modules/react-native-appearance/android/build.gradle
+index 57d3f80..54abc8b 100644
+--- a/node_modules/react-native-appearance/android/build.gradle
++++ b/node_modules/react-native-appearance/android/build.gradle
+@@ -20,7 +20,7 @@ buildscript {
+ }
+ 
+ apply plugin: 'com.android.library'
+-apply plugin: 'maven-publish'
++apply plugin: 'maven-publish'
+ 
+ // Matches values in recent template from React Native 0.59 / 0.60
+ // https://github.com/facebook/react-native/blob/0.59-stable/template/android/build.gradle#L5-L9
+@@ -128,10 +128,5 @@ afterEvaluate { project ->
+ 
+     task installArchives(type: Upload) {
+         configuration = configurations.archives
+-        repositories.mavenDeployer {
+-            // Deploy to react-native-event-bridge/maven, ready to publish to npm
+-            repository url: "file://${projectDir}/../android/maven"
+-            configureReactNativePom pom
+-        }
+     }
+ }
